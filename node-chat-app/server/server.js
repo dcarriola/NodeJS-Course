@@ -12,9 +12,19 @@ let io = socketIO(server);
 // Register static folder
 app.use(express.static(publicPath));
 
-// Connect client with server
+// Connect server with client
 io.on('connection', (socket) => {
   console.log('New user connected');
+
+  socket.emit('newMessage', {
+    from: 'Daniel',
+    text: 'Hey there!',
+    createdAt: 123
+  });
+
+  socket.on('createMessage', (message) => {
+    console.log('Create message', message);
+  });
 
   socket.on('disconnect', () => {
     console.log('User was disconnected');
